@@ -8,4 +8,4 @@ if __name__ == "__main__":
     drive = GoogleDrive(gauth)
 
     drive_loader = DriveLoader(drive)
-    drive_loader.upload_folder("src", "ttt/src")
+    drive_loader.upload_folder("src", "test_folder1/test_folder2/src")
