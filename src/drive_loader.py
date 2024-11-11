@@ -45,7 +45,7 @@ class DriveLoader():
         filename = posixpath.basename(drive_file_path)
 
         drive_folder_path = posixpath.dirname(drive_file_path)
-        folder_id = self.create_folder(self.drive, drive_folder_path, parent) if parent is None else parent # Если вдруг такой папки нет
+        folder_id = self.create_folder(drive_folder_path, parent) if parent is None else parent # Если вдруг такой папки нет
 
         file_metadata = {
             'title': filename,
@@ -60,12 +60,12 @@ class DriveLoader():
         folder_path = posixpath.normpath(folder_path)
         drive_folder_path = posixpath.normpath(drive_folder_path)
 
-        parent = self.create_folder(self.drive,  drive_folder_path, parent)
+        parent = self.create_folder(drive_folder_path, parent)
 
         for name in os.listdir(folder_path):
             path = posixpath.join(folder_path, name)
             sub_drive_path = posixpath.join(drive_folder_path, name)
             if posixpath.isfile(path):
-                self.upload_file(self.drive, path, sub_drive_path, parent)
+                self.upload_file(path, sub_drive_path, parent)
             else:
-                self.upload_folder(self.drive, path, sub_drive_path, parent)
+                self.upload_folder(path, sub_drive_path, parent)
