@@ -5,7 +5,7 @@ import pathspec
 import json
 
 class DriveLoader():
-    def __init__(self, drive: GoogleDrive, driveignore_path: str = ".driveignore", drivecache_path: str = ".drivechache", save_cache=True, sync_mode=True):
+    def __init__(self, drive: GoogleDrive, driveignore_path: str = ".driveignore", drivecache_path: str = ".drivechache", save_cache=True, sync_mode=False):
         self.drive = drive
         self.sync_mode = sync_mode
 
