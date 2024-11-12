@@ -7,5 +7,5 @@ if __name__ == "__main__":
     gauth.LocalWebserverAuth()
     drive = GoogleDrive(gauth)
 
-    drive_loader = DriveLoader(drive)
+    drive_loader = DriveLoader(drive, sync_mode=True)
     drive_loader.upload_folder("test", "SomeFolder/ererer/test_folder1/test")

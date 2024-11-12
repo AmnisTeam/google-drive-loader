@@ -111,17 +111,16 @@ class DriveLoader():
             file_in_cache = file_path in self.cache
             if not file_in_cache:
                 objects = self.check_path(drive_file_path if parent == None else posixpath.basename(drive_file_path), "root" if parent == None else parent) # ПРОВЕРИТЬ!!!!!
-            replace_no_cache_object = ( (len(objects) == len(drive_file_path.split("/"))) if parent == None else (len(objects) == 1) )
+                replace_no_cache_object = ( (len(objects) == len(drive_file_path.split("/"))) if parent == None else (len(objects) == 1) )
             mtime = os.path.getmtime(file_path)
-            if replace_no_cache_object:
+            
+            if not file_in_cache and replace_no_cache_object:
+                # Замена существующего файла
                 is_need_save = True
                 file = self.replace_file(file_path, objects[-1]["id"])
                 self.cache[file_path] = [mtime, file["id"]]
-            elif mtime > self.cache[file_path][0]:
-                is_need_save = True
-                file = self.replace_file(file_path, self.cache[file_path][1])
-                self.cache[file_path] = [mtime, file["id"]]
-            else:
+            if not file_in_cache:
+                # Загрузка нового файла
                 is_need_save = True
                 filename = posixpath.basename(drive_file_path)
                 drive_folder_path = posixpath.dirname(drive_file_path)
@@ -136,6 +135,11 @@ class DriveLoader():
                 gfile.Upload()
 
                 self.cache[file_path] = [mtime, gfile["id"]]
+            elif mtime > self.cache[file_path][0]:
+                # Обнавление закешированного файла
+                is_need_save = True
+                file = self.replace_file(file_path, self.cache[file_path][1])
+                self.cache[file_path] = [mtime, file["id"]]
             
             if self.save_cache and root and is_need_save:
                     with open(self.drivecache_path, "w") as file:
